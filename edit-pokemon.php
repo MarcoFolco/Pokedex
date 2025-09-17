@@ -32,12 +32,14 @@
         
         // Verificar campos requeridos
         if (
+            isset($_POST["id"]) &&
             isset($_POST["name"]) &&
             isset($_POST["pokemon_id"]) &&
             isset($_POST["type1"]) &&
             isset($_POST["description"])
         ) {
             // Variables de formulario
+            $id          = $_POST["id"];
             $name        = trim($_POST["name"]);
             $pokemon_id  = (int) $_POST["pokemon_id"];
             $type1       = trim($_POST["type1"]);
@@ -48,13 +50,9 @@
                 exit('<div class="alert alert-danger" role="alert">Un pokemon no puede tener dos tipos iguales</div><a href="create.php" class="btn btn-secondary">Volver a vista de creación</a>');
             }
 
-            $pokemon = $pokemonUtils->fetchPokemon($pokemon_id);
-            if( $pokemon ) {
-                exit('<p>Ese Pokemon ya existe</p><a href="create.php" class="btn btn-secondary">Volver a vista de creación</a>');
-            }
-
-            // Manejo de la imagen
+            // Manejo de la imagen, si es que se cambia
             $imagePath = null;
+            $baseNewFileName = null;
             if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
                 $uploadDir = "assets/imgs/pokemon_avatars/";  // Carpeta destino
                 if (!is_dir($uploadDir)) {
@@ -85,6 +83,7 @@
 
 
             $data = [
+                "id"            => $id,
                 "nombre"        => $name,
                 "numero_identificador"  => $pokemon_id,
                 "tipo_1_id"       => $type1,
@@ -93,12 +92,12 @@
                 "imagen"       => $baseNewFileName
             ];
 
-            $createResult = $pokemonUtils->createPokemon($data);
+            $editResult = $pokemonUtils->editPokemon($data);
 
-            if( $createResult ) {
-                echo '<p>Pokemon creado con éxito</p>';
+            if( $editResult ) {
+                echo '<p>Pokemon editado con éxito</p>';
             } else {
-                echo '<p>Error al crear Pokemon</p>';
+                echo '<p>Error al editar Pokemon</p>';
             }
 
             echo '<a href="index.php" class="btn btn-secondary">Back to List</a>';

@@ -7,15 +7,9 @@
 </head>
 <body class="bg-light">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="index.php">Pokedex</a>
-      <div class="ms-auto">
-        <img src="assets/imgs/user-avatar.png" alt="User Avatar" class="rounded-circle" width="40" height="40">
-      </div>
-    </div>
-  </nav>
+  <?php
+  include_once("nav.php");
+  ?>
 
   <!-- Main content -->
   <main class="container my-4">
@@ -27,12 +21,8 @@
       if( isset($_GET['id']) ) {
         $numero_identificador = $_GET['id'];
         $pokemon = $pokemonUtils->fetchPokemon($numero_identificador);
-        if(count($pokemon) == 1) {
-          $pokemon = $pokemon[0];
+        if($pokemon) {
           include_once('details-found.php');
-          exit();
-        } else if ( count($pokemon) > 1 ) {
-          echo '<p>Se encontro mas de un pokemon con ese numero de identificador</p>';
           exit();
         }
       }

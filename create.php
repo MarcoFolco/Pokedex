@@ -6,16 +6,17 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+  <?php
+    require_once("database.php");
+    require_once("pokemon-utils.php");
+    $databaseInstance = new Database();
+    $pokemonUtils = new PokemonUtils($databaseInstance);
+    $pokemonTypes = $pokemonUtils->fetchAllPokemonTypes();
+  ?>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="index.php">Pokedex</a>
-      <div class="ms-auto">
-        <img src="path/to/avatar.png" alt="Usuario" class="rounded-circle" width="40" height="40">
-      </div>
-    </div>
-  </nav>
+  <?php
+    include_once("nav.php");
+  ?>
 
   <!-- Contenido principal -->
   <main class="container my-4">
@@ -47,13 +48,10 @@
             <label for="type1" class="form-label">Tipo 1</label>
             <select name="type1" id="type1" class="form-select" required>
               <option value="">-- Selecciona un tipo --</option>
-              <option value="agua">Agua</option>
-              <option value="fuego">Fuego</option>
-              <option value="luchador">Luchador</option>
-              <option value="planta">Planta</option>
-              <option value="psiquico">Psiquico</option>
-              <option value="rayo">Rayo</option>
-              <!-- agregar todos los tipos -->
+              <?php
+                foreach ($pokemonTypes as $pokemonType)
+                  echo '<option value="' . $pokemonType['id'] .'">'. $pokemonType['nombre'] . '</option>';
+              ?>
             </select>
           </div>
 
@@ -61,13 +59,10 @@
             <label for="type2" class="form-label">Tipo 2 (opcional)</label>
             <select name="type2" id="type2" class="form-select">
               <option value="">-- Selecciona un tipo --</option>
-              <option value="agua">Agua</option>
-              <option value="fuego">Fuego</option>
-              <option value="luchador">Luchador</option>
-              <option value="planta">Planta</option>
-              <option value="psiquico">Psiquico</option>
-              <option value="rayo">Rayo</option>
-              <!-- agregar todos los tipos -->
+              <?php
+                foreach ($pokemonTypes as $pokemonType)
+                  echo '<option value="' . $pokemonType['id'] .'">'. $pokemonType['nombre'] . '</option>';
+              ?>
             </select>
           </div>
 

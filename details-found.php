@@ -3,15 +3,15 @@
     <div class="col-md-4 text-center p-4">
         <picture>
         <?php
-            echo '<img src="assets/imgs/' . $pokemon['imagen'] . '.webp" class="img-fluid rounded" alt="Pokemon Name">'
+            echo '<img src="assets/imgs/pokemon_avatars/' . $pokemon['imagen'] . '.webp" class="img-fluid rounded" alt="Pokemon Name">'
         ?>
         </picture>
         <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
         <?php
-            echo 'Tipos: ' . '<img src="assets/imgs/pokemon_types/' . $pokemon['tipo_1'] . '.png" alt="Tipo '. $pokemon['tipo_1'] . '" width="40" height="40">';
-            if( isset($pokemon['tipo_2']) && $pokemon['tipo_2'] ) {
+            echo 'Tipos: ' . '<img src="assets/imgs/pokemon_types/' . $pokemon['tipo1'] . '.png" alt="Tipo '. $pokemon['tipo1'] . '" width="40" height="40">';
+            if( isset($pokemon['tipo2']) && $pokemon['tipo2'] ) {
                 echo
-                '<img src="path/to/' . $pokemon['tipo_2'] . '.png" alt="Tipo '. $pokemon['tipo_2'] . '" width="30" height="30">';
+                '<img src="assets/imgs/pokemon_types/' . $pokemon['tipo2'] . '.png" alt="Tipo '. $pokemon['tipo2'] . '" width="30" height="30">';
             }
         ?>
         <!-- Optional second type -->
