@@ -42,7 +42,7 @@
             if( $pokemon ) {
                 $imagen  = $pokemon["imagen"];
     
-                $imagenDir = __DIR__ . "/" . $imagen;
+                $imagenDir = "assets/imgs/pokemon_avatars/$imagen.webp";
     
                 // Eliminar imagen
                 if (file_exists($imagenDir)) {
@@ -59,14 +59,14 @@
     
                 echo '<a href="index.php" class="btn btn-secondary">Volver al listado</a>';
             } else {
-                exit('<p>No existe un pokemon con ese número de identificador.</p><a href="./" class="btn btn-secondary">Volver a listado</a>');
+                exit('<p>No existe un pokemon con ese número de identificador.</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
             }
 
         } else {
-            exit('<p>Faltan campos obligatorios para poder borrar este Pokemon.</p><a href="./" class="btn btn-secondary">Volver a listado</a>');
+            exit('<p>Faltan campos obligatorios para poder borrar este Pokemon.</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
         }
     } else {
-        exit('<p>Acceso inválido.</p><a href="./" class="btn btn-secondary">Volver a listado</a>');
+        exit('<p>Acceso inválido.</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
     }
     ?>
   </main>

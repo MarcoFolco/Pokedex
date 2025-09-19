@@ -22,10 +22,8 @@
       if( isset($_GET['id']) ) {
         $numero_identificador = $_GET['id'];
         $pokemon = $pokemonUtils->fetchPokemon($numero_identificador);
-        if($pokemon) {
-          $pokemon = $pokemon[0];
-        } else {
-            echo '<p>No hay un Pokemon con ese numero de identificador</p>';
+        if(!$pokemon) {
+            exit('<p>No hay un Pokemon con ese numero de identificador</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
         }
       }
     ?>
