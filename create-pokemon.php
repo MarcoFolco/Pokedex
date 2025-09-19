@@ -7,12 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-  <?php
-    require_once("database.php");
-    require_once("pokemon-utils.php");
-    $databaseInstance = new Database();
-    $pokemonUtils = new PokemonUtils($databaseInstance);
-  ?>
 
   <?php
     include_once("nav.php");
@@ -25,51 +19,53 @@
         <?php
         require_once("database.php");
         require_once("pokemon-utils.php");
+        require_once("session-utils.php");
         $databaseInstance = new Database();
         $pokemonUtils = new PokemonUtils($databaseInstance);
-        error_reporting(E_ALL);
-        ini_set('display_errors', 'On');
+        $sessionUtils = new SessionUtils();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             
             // Verificar campos requeridos
             if (
-                isset($_POST["id"]) &&
                 isset($_POST["name"]) &&
                 isset($_POST["pokemon_id"]) &&
                 isset($_POST["type1"]) &&
-                isset($_POST["description"]) &&
-                isset($_POST["existingImageName"])
+                isset($_POST["description"])
             ) {
                 // Variables de formulario
-                $id          = $_POST["id"];
                 $name        = trim($_POST["name"]);
                 $pokemon_id  = (int) $_POST["pokemon_id"];
                 $type1       = trim($_POST["type1"]);
                 $type2       = isset($_POST["type2"]) ? trim($_POST["type2"]) : null;
                 $description = trim($_POST["description"]);
-                $existingImageName = $_POST["existingImageName"];
 
                 $formData = [
-                        "id"        => $id,
-                        "name"        => $name,
-                        "pokemon_id"  => $pokemon_id,
-                        "type1"       => $type1,
-                        "type2"       => $type2,
-                        "description" => $description,
-                        "errors" => [],
-                    ];
+                    "name"        => $name,
+                    "pokemon_id"  => $pokemon_id,
+                    "type1"       => $type1,
+                    "type2"       => $type2,
+                    "description" => $description,
+                    "errors" => [],
+                ];
 
                 if( $type1 == $type2 ) {
                     $formData['errors']['duplicatedTypeError'] = 'Un pokemon no puede tener dos tipos iguales'; 
-                    $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-                    header('Location: edit.php?id=' . $formData['pokemon_id']);
+                    $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                    header('Location: create.php');
                     exit();
                 }
 
-                // Manejo de la imagen, si es que se cambia
+                $pokemon = $pokemonUtils->fetchPokemon($pokemon_id);
+                if( $pokemon ) {
+                    $formData['errors']['duplicatedPokemon'] = 'Ese Pokemon ya existe'; 
+                    $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                    header('Location: create.php');
+                    exit();
+                }
+
+                // Manejo de la imagen
                 $imagePath = null;
-                $baseNewFileName = null;
                 if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
                     $uploadDir = "assets/imgs/pokemon_avatars/";  // Carpeta destino
                     if (!is_dir($uploadDir)) {
@@ -90,27 +86,22 @@
                     if (in_array($fileExt, $allowedExts)) {
                         if (move_uploaded_file($fileTmpPath, $destPath)) {
                             $imagePath = $newFileName;
-                            $currentImgPath = $uploadDir . $existingImageName . '.webp';
-                            if(file_exists($currentImgPath)) {
-                                unlink($currentImgPath);
-                            }
                         } else {
                             $formData['errors']['imageUploadError'] = "Error al mover la imagen al directorio de destino." . $destPath . " $fileTmpPath"; 
-                            $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-                            header('Location: edit.php?id=' . $formData['pokemon_id']);
+                            $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                            header('Location: create.php');
                             exit();
                         }
                     } else {
                         $formData['errors']['invalidImageFormat'] = "Formato de imagen no permitido. Usa WEBP."; 
-                        $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-                        header('Location: edit.php?id=' . $formData['pokemon_id']);
+                        $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                        header('Location: create.php');
                         exit();
                     }
                 }
 
 
                 $data = [
-                    "id"            => $id,
                     "nombre"        => $name,
                     "numero_identificador"  => $pokemon_id,
                     "tipo_1_id"       => $type1,
@@ -119,29 +110,29 @@
                     "imagen"       => $baseNewFileName
                 ];
 
-                $editResult = $pokemonUtils->editPokemon($data);
+                $createResult = $pokemonUtils->createPokemon($data);
 
-                if( $editResult ) {
-                    echo '<p>Pokemon editado con éxito</p>';
+                if( $createResult ) {
+                    echo '<p>Pokemon creado con éxito</p>';
                 } else {
-                    $formData['errors']['errorEditingPokemon'] = "Error al editar Pokemon"; 
-                    $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-                    header('Location: edit.php?id=' . $formData['pokemon_id']);
+                    $formData['errors']['errorCreatingPokemon'] = "Error al crear Pokemon"; 
+                    $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                    header('Location: create.php');
                     exit();
                 }
 
-                echo '<a href="index.php" class="btn btn-secondary">Volver al listado</a>';
+                echo '<a href="index.php" class="btn btn-secondary">Back to List</a>';
 
             } else {
-                $formData['errors']['invalidForm'] = "Faltan campos obligatorios en el formulario."; 
-                $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-                header('Location: edit.php?id=' . $formData['pokemon_id']);
+                $formData['errors']['invalidForm'] = "Faltan campos obligatorios en el formulario"; 
+                $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+                header('Location: create.php');
                 exit();
             }
         } else {
             $formData['errors']['invalidMethod'] = "Debe usar POST para usar esta acción."; 
-            $sessionUtils->setSessionValue("editPokemonFormData", $formData);
-            header('Location: edit.php?id=' . $formData['pokemon_id']);
+            $sessionUtils->setSessionValue("createPokemonFormData", $formData);
+            header('Location: create.php');
             exit();
         }
         ?>

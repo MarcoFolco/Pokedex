@@ -20,6 +20,7 @@
                 $sessionUtils->unsetSessionValue('loginPassword');
                 $sessionUtils->unsetSessionValue('loginErrors');
                 header('Location: index.php');
+                exit();
             }
             else {
                 $_SESSION['loginUsername'] = $username;
@@ -28,11 +29,13 @@
                 $errors['credentials'] = 'Credenciales invalidas';
                 $sessionUtils->setSessionValue('loginErrors', $errors);
                 header('Location: login.php');
+                exit();
             }
         }
     } else {
         $errors['invalidRequest'] = 'Debe user POST como metodo para loguearse';
         $sessionUtils->setSessionValue('loginErrors', $errors);
         header('Location: login.php');
+        exit();
     }
 ?>

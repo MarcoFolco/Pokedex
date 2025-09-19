@@ -15,7 +15,7 @@ class LoginUtils {
         $query = 'SELECT u.*, ru.nombre as rol FROM usuario u ' .
                  'LEFT JOIN rol_usuario ru ON u.rol_id = ru.id ' .
                  'WHERE nombre_usuario = "' . $data['username'] . '" AND contrasenia = "' . $data['password'] . '"';
-        $result = $this->databaseInstance->query($query);
+        $result = $this->databaseInstance->selectQuery($query);
         if(sizeof($result) > 0) {
             $user = $result[0];
             $username = $user['nombre_usuario'];

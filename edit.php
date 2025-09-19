@@ -13,39 +13,62 @@
 
   <!-- Contenido principal -->
   <main class="container my-4">
-    <?php
-      require_once("database.php");
-      require_once("pokemon-utils.php");
-      $databaseInstance = new Database();
-      $pokemonUtils = new PokemonUtils($databaseInstance);
-      $pokemonTypes = $pokemonUtils->fetchAllPokemonTypes();
-      if( isset($_GET['id']) ) {
-        $numero_identificador = $_GET['id'];
-        $pokemon = $pokemonUtils->fetchPokemon($numero_identificador);
-        if(!$pokemon) {
-            exit('<p>No hay un Pokemon con ese numero de identificador</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
-        }
-      }
-    ?>
     <div class="card shadow-sm">
       <div class="card-body">
+        <?php
+          include_once('session-utils.php');
+          $sessionUtils = new SessionUtils();
+          if(!$sessionUtils->isUserAdmin())
+            exit('<p>No tienes permisos para ver esta página.</p><a href="index.php" class="btn btn-secondary">Volver al inicio</a>')
+        ?>
+        <?php
+          require_once("database.php");
+          require_once("pokemon-utils.php");
+          $databaseInstance = new Database();
+          $pokemonUtils = new PokemonUtils($databaseInstance);
+          $pokemonTypes = $pokemonUtils->fetchAllPokemonTypes();
+          if( isset($_GET['id']) ) {
+            $numero_identificador = $_GET['id'];
+            $pokemon = $pokemonUtils->fetchPokemon($numero_identificador);
+            if(!$pokemon) {
+                exit('<p>No hay un Pokemon con ese numero de identificador</p><a href="index.php" class="btn btn-secondary">Volver al listado</a>');
+            }
+          }
+          $formData = $sessionUtils->getSessionValue('editPokemonFormData');
+          if(!$formData) {
+            $formData = [
+                          "id"          => $pokemon['id'],
+                          "name"        => $pokemon['nombre'],
+                          "pokemon_id"  => $pokemon['numero_identificador'],
+                          "type1"       => $pokemon['tipo_1_id'],
+                          "type2"       => $pokemon['tipo_2_id'],
+                          "description" => $pokemon['descripcion'],
+                          "errors" => [],
+                      ];
+          }
+        ?>
         <h3 class="card-title mb-4">Editar Pokémon</h3>
+        <?php
+          foreach($formData['errors'] as $error)
+            echo '<div class="alert alert-danger mt-3">'. $error . '</div>';
+          $formData['errors'] = [];
+        ?>
         <form method="POST" action="edit-pokemon.php" enctype="multipart/form-data" class="row g-3">
 
-          <input type="hidden" name="id" value="<?php echo $pokemon['id']; ?>">
+          <input type="hidden" name="id" value="<?php echo $formData['id']; ?>">
 
           <!-- Nombre -->
           <div class="col-md-6">
             <label for="name" class="form-label">Nombre</label>
             <input type="text" name="name" id="name" class="form-control" 
-                   value="<?php echo $pokemon['nombre']; ?>" required>
+                   value="<?php echo $formData['name']; ?>" required>
           </div>
 
           <!-- Numero identificador -->
           <div class="col-md-6">
             <label for="pokemon_id" class="form-label">ID</label>
             <input type="number" name="pokemon_id" id="pokemon_id" class="form-control"
-                   value="<?php echo $pokemon['numero_identificador']; ?>" required>
+                   value="<?php echo $formData['pokemon_id']; ?>" required>
           </div>
 
           <!-- Imagen -->
@@ -59,6 +82,8 @@
             </div>
           </div>
 
+          <input type="hidden" name="existingImageName" value="<?php echo $pokemon['imagen'] ?>">
+
           <!-- Tipos -->
           <div class="col-md-6">
             <label for="type1" class="form-label">Tipo 1</label>
@@ -66,7 +91,7 @@
               <option value="">-- Selecciona un tipo --</option>
               <?php
                 foreach ($pokemonTypes as $pokemonType){
-                  echo '<option value="' . $pokemonType['id'] . ($pokemonType['id'] == $pokemon['tipo_1_id'] ? '" selected>' : '">') . $pokemonType['nombre'] . '</option>';
+                  echo '<option value="' . $pokemonType['id'] . ($pokemonType['id'] == $formData['type1'] ? '" selected>' : '">') . $pokemonType['nombre'] . '</option>';
                 }
               ?>
               <!-- agregar todos los tipos -->
@@ -79,7 +104,7 @@
               <option value="">-- Selecciona un tipo --</option>
               <?php
                 foreach ($pokemonTypes as $pokemonType){
-                  echo '<option value="' . $pokemonType['id'] . ($pokemonType['id'] == $pokemon['tipo_2_id'] ? '" selected>' : '">') . $pokemonType['nombre'] . '</option>';
+                  echo '<option value="' . $pokemonType['id'] . ($pokemonType['id'] == $formData['type2'] ? '" selected>' : '">') . $pokemonType['nombre'] . '</option>';
                 }
               ?>
               <!-- agregar todos los tipos -->
@@ -89,7 +114,7 @@
           <!-- Descripción -->
           <div class="col-12">
             <label for="description" class="form-label">Descripción</label>
-            <textarea name="description" id="description" class="form-control" rows="4" required><?php echo $pokemon['descripcion']; ?></textarea>
+            <textarea name="description" id="description" class="form-control" rows="4" required><?php echo $formData['description']; ?></textarea>
           </div>
 
           <!-- Acciones -->
@@ -99,6 +124,9 @@
           </div>
 
         </form>
+        <?php
+          $sessionUtils->unsetSessionValue('editPokemonFormData');
+        ?>
       </div>
     </div>
   </main>

@@ -24,9 +24,9 @@
             echo 
             '<h3 class="card-title">'. $pokemon['nombre'] . '</h3>' .
             '<p class="text-muted">ID: ' . $pokemon['numero_identificador'] . '</p>' .
-            '<p class="card-text">' . $pokemon['descripcion'] . '</p>';
+            '<p class="card-text">Descripción: ' . $pokemon['descripcion'] . '</p>';
         ?>
-        <a href="index.php" class="btn btn-secondary">Back to List</a>
+        <a href="index.php" class="btn btn-secondary">Volver al listado</a>
         </div>
     </div>
     </div>

@@ -9,8 +9,11 @@
   <?php
     require_once("database.php");
     require_once("pokemon-utils.php");
+    require_once('session-utils.php');
     $databaseInstance = new Database();
     $pokemonUtils = new PokemonUtils($databaseInstance);
+    $sessionUtils = new SessionUtils();
+    $isUserAdmin = $sessionUtils->isUserAdmin();
   ?>
 
   <?php
@@ -32,15 +35,21 @@
 
     <!-- Pokémon List -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card shadow-sm h-100 border-dashed">
-          <div class="card-body text-center d-flex align-items-center justify-content-center">
-            <a href="create.php" class="btn btn-success btn-lg w-100">
-              + Create New Pokémon
-            </a>
-          </div>
-        </div>
-      </div>
+      <?php
+        if( $isUserAdmin ) {
+          echo '
+          <div class="col">
+            <div class="card shadow-sm h-100 border-dashed">
+              <div class="card-body text-center d-flex align-items-center justify-content-center">
+                <a href="create.php" class="btn btn-success btn-lg w-100">
+                  + Create New Pokémon
+                </a>
+              </div>
+            </div>
+          </div>';
+        }
+      ?>
+      
 
       <?php
         if( isset($_GET['search']) && $_GET['search'] ) {

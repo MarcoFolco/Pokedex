@@ -3,19 +3,25 @@
 class PokemonUtils {
 
     private $databaseInstance;
+    private $sessionUtils;
 
     public function __construct($databaseInstance) {
+        require_once('session-utils.php');
         $this->databaseInstance = $databaseInstance;
+        $this->sessionUtils = new SessionUtils();
     }
 
     public function fetchAllPokemonTypes() {
-      $query = 'SELECT * FROM tipo';
+      $query = 'SELECT * FROM tipo_pokemon';
       $result = $this->databaseInstance->selectQuery($query);
       return $result;
     }
 
     public function searchPokemon($value) {
-        $query = 'SELECT * FROM pokemon WHERE nombre LIKE "%' . $value . '%" OR tipo_1 LIKE "%' . $value . '%" OR tipo_2 LIKE "%' . $value . '%"';
+        $query = 'SELECT p.*, t1.nombre AS tipo1, t2.nombre AS tipo2 FROM pokemon p '.
+                 'LEFT JOIN tipo_pokemon t1 ON p.tipo_1_id = t1.id ' .
+                 'LEFT JOIN tipo_pokemon t2 ON p.tipo_2_id = t2.id ' . 
+                 'WHERE p.nombre LIKE "%' . $value . '%" OR t1.nombre LIKE "%' . $value . '%" OR t2.nombre LIKE "%' . $value . '%"';
         $result = $this->databaseInstance->selectQuery($query);
         return $result;
     }
@@ -58,8 +64,8 @@ class PokemonUtils {
             t1.nombre AS tipo1, 
             t2.nombre AS tipo2
             FROM pokemon p
-            LEFT JOIN tipo t1 ON p.tipo_1_id = t1.id
-            LEFT JOIN tipo t2 ON p.tipo_2_id = t2.id';
+            LEFT JOIN tipo_pokemon t1 ON p.tipo_1_id = t1.id
+            LEFT JOIN tipo_pokemon t2 ON p.tipo_2_id = t2.id';
         $result = $this->databaseInstance->selectQuery($query);
         return $result;
     }
@@ -70,8 +76,8 @@ class PokemonUtils {
             t1.nombre AS tipo1, 
             t2.nombre AS tipo2
             FROM pokemon p
-            LEFT JOIN tipo t1 ON p.tipo_1_id = t1.id
-            LEFT JOIN tipo t2 ON p.tipo_2_id = t2.id WHERE numero_identificador = ' . $numero_identificador;
+            LEFT JOIN tipo_pokemon t1 ON p.tipo_1_id = t1.id
+            LEFT JOIN tipo_pokemon t2 ON p.tipo_2_id = t2.id WHERE numero_identificador = ' . $numero_identificador;
         $result = $this->databaseInstance->selectQuery($query);
         if(sizeof($result) == 1) {
           $result = $result[0];
@@ -103,8 +109,8 @@ class PokemonUtils {
                       '<div class="d-flex justify-content-between">' .
                         '<a href="details.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-primary btn-sm">Details</a>' . 
                         '<div class="btn-group">' .
-                          '<a href="edit.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-warning btn-sm">Edit</a>' .
-                          '<a href="delete-pokemon.php?id=' . $pokemon['numero_identificador']  . '" class="btn btn-outline-danger btn-sm">Delete</a>' . 
+                          ($this->sessionUtils->isUserAdmin() ? ('<a href="edit.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-warning btn-sm">Edit</a>') : '') .
+                          ($this->sessionUtils->isUserAdmin() ? ('<a href="delete-pokemon.php?id=' . $pokemon['numero_identificador']  . '" class="btn btn-outline-danger btn-sm">Delete</a>') : '') . 
                         '</div>' .
                       '</div>' .
                     '</div>' .

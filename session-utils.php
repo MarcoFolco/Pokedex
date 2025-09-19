@@ -3,11 +3,19 @@
     class SessionUtils {
 
         public function __construct() {
-            session_start();
+            if(session_status() == PHP_SESSION_NONE)
+                session_start();
         }
 
         public function isUserLoggedIn() {
             if( isset($_SESSION['username']) && $_SESSION['username'] ) {
+                return true;
+            }
+            return false;
+        }
+
+        public function isUserAdmin() {
+            if( isset($_SESSION['rol']) && $_SESSION['rol'] == 'admin' ) {
                 return true;
             }
             return false;

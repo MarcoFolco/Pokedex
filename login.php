@@ -8,10 +8,11 @@
 <body class="bg-light">
 
   <?php
-    include_once('new-nav.php');
+    include_once('nav.php');
   ?>
 
   <?php
+    require_once('session-utils.php');
     $sessionUtils = new SessionUtils();
     $username = $sessionUtils->getSessionValue('loginUsername');
     $password = $sessionUtils->getSessionValue('loginPassword');

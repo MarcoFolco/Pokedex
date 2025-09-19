@@ -13,7 +13,7 @@
   ?>
 
   <?php
-    include_once('new-nav.php');
+    include_once('nav.php');
   ?>
 
   <!-- Contenido principal -->
@@ -23,7 +23,7 @@
         <p>
         Sesion finalizada con exito
         </p>
-        <a href="index.php">Volver al inicio</a>
+        <a href="index.php" class="btn btn-secondary">Volver al inicio</a>
       </div>
     </div>
   </main>
