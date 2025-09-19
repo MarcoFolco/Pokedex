@@ -13,15 +13,9 @@
     $pokemonUtils = new PokemonUtils($databaseInstance);
   ?>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">Pokedex</a>
-      <div class="ms-auto">
-        <img src="assets/imgs/user-avatar.png" alt="User Avatar" class="rounded-circle" width="40" height="40">
-      </div>
-    </div>
-  </nav>
+  <?php
+    include_once('new-nav.php');
+  ?>
 
   <!-- Main content -->
   <main class="container my-4">
