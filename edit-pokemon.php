@@ -71,7 +71,7 @@
 
                 // Manejo de la imagen, si es que se cambia
                 $imagePath = null;
-                $baseNewFileName = null;
+                $newFileName = null;
                 if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
                     $uploadDir = "assets/imgs/pokemon_avatars/";  // Carpeta destino
                     if (!is_dir($uploadDir)) {

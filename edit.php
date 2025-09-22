@@ -102,7 +102,7 @@
 
           <div class="col-md-6">
             <label for="type2" class="form-label">Tipo 2</label>
-            <select name="type2" id="type2" class="form-select" required>
+            <select name="type2" id="type2" class="form-select">
               <option value="">-- Selecciona un tipo --</option>
               <?php
                 foreach ($pokemonTypes as $pokemonType){

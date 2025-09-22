@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-09-2025 a las 01:07:35
+-- Tiempo de generación: 23-09-2025 a las 01:21:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `pokemon` (
   `imagen` varchar(255) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `tipo_1_id` int(11) NOT NULL,
-  `tipo_2_id` int(11) NOT NULL,
+  `tipo_2_id` int(11) DEFAULT NULL,
   `descripcion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -141,7 +141,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `pokemon`
 --
 ALTER TABLE `pokemon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `rol_usuario`

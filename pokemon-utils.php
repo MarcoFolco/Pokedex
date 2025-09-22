@@ -29,7 +29,7 @@ class PokemonUtils {
     public function createPokemon($pokemonValues) {
         $query = 'INSERT INTO pokemon(numero_identificador, nombre, imagen, tipo_1_id, tipo_2_id, descripcion) ' .
         'VALUES(' . $pokemonValues['numero_identificador'] . ",'" . $pokemonValues['nombre'] . "','" . $pokemonValues['imagen'] . "'," .
-        $pokemonValues['tipo_1_id'] . "," . $pokemonValues['tipo_2_id'] . ",'" . $pokemonValues['descripcion'] . "')";
+        $pokemonValues['tipo_1_id'] . "," . ($pokemonValues['tipo_2_id'] ? $pokemonValues['tipo_2_id'] : 'null') . ",'" . $pokemonValues['descripcion'] . "')";
         $result = $this->databaseInstance->cudQuery($query);
         return $result;
     }
@@ -40,8 +40,8 @@ class PokemonUtils {
             SET 
                 nombre = "' . $pokemonValues['nombre'] . '",
                 numero_identificador = "' . $pokemonValues['numero_identificador'] . '",
-                tipo_1_id = "' . $pokemonValues['tipo_1_id'] . '",
-                tipo_2_id = "' . $pokemonValues['tipo_2_id'] . '",
+                tipo_1_id = ' . $pokemonValues['tipo_1_id'] . ',
+                tipo_2_id = ' . ($pokemonValues['tipo_2_id'] ? $pokemonValues['tipo_2_id'] : 'null') . ',
                 descripcion = "' . $pokemonValues['descripcion'] . '"' .
                 ($pokemonValues['imagen'] ? (', imagen = "' . $pokemonValues['imagen'] . '"') : '') . '
             WHERE id = ' . $pokemonValues['id'];
