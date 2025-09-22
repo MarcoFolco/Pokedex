@@ -44,7 +44,7 @@
 
           <!-- Contrasenia -->
           <div class="col-md-6 col-sm-12">
-            <label for="password" class="form-label">Contrasenia</label>
+            <label for="password" class="form-label">Contraseña</label>
             <input type="password" name="password" id="password" class="form-control" <?php echo 'value="' . $password . '"'; $sessionUtils->unsetSessionValue('loginPassword'); ?> required>
           </div>
 

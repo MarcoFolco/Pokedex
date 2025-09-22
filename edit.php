@@ -40,6 +40,7 @@
                           "id"          => $pokemon['id'],
                           "name"        => $pokemon['nombre'],
                           "pokemon_id"  => $pokemon['numero_identificador'],
+                          "initial_pokemon_id" => $numero_identificador,
                           "type1"       => $pokemon['tipo_1_id'],
                           "type2"       => $pokemon['tipo_2_id'],
                           "description" => $pokemon['descripcion'],
@@ -56,6 +57,7 @@
         <form method="POST" action="edit-pokemon.php" enctype="multipart/form-data" class="row g-3">
 
           <input type="hidden" name="id" value="<?php echo $formData['id']; ?>">
+          <input type="hidden" name="initial_pokemon_id" value="<?php echo $formData['initial_pokemon_id']; ?>">
 
           <!-- Nombre -->
           <div class="col-md-6">
@@ -77,7 +79,7 @@
             <input type="file" name="image" id="image" class="form-control">
             <div class="mt-2">
               <picture>
-                <img src="assets/imgs/pokemon_avatars/<?php echo $pokemon['imagen']; ?>.webp" alt="Imagen actual" width="120" class="rounded">
+                <img src="assets/imgs/pokemon_avatars/<?php echo $pokemon['imagen']; ?>" alt="Imagen actual" width="120" class="rounded">
               </picture>
             </div>
           </div>

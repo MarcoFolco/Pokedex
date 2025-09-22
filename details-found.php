@@ -3,7 +3,7 @@
     <div class="col-md-4 text-center p-4">
         <picture>
         <?php
-            echo '<img src="assets/imgs/pokemon_avatars/' . $pokemon['imagen'] . '.webp" class="img-fluid rounded" alt="Pokemon Name">'
+            echo '<img src="assets/imgs/pokemon_avatars/' . $pokemon['imagen'] . '" class="img-fluid rounded" alt="Pokemon Name">'
         ?>
         </picture>
         <div class="d-flex justify-content-center align-items-center gap-3 mt-3">

@@ -44,7 +44,7 @@
                 if( $pokemon ) {
                     $imagen  = $pokemon["imagen"];
         
-                    $imagenDir = "assets/imgs/pokemon_avatars/$imagen.webp";
+                    $imagenDir = "assets/imgs/pokemon_avatars/$imagen";
         
                     // Eliminar imagen
                     if (file_exists($imagenDir)) {

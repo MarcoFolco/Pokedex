@@ -26,10 +26,10 @@
     <!-- Search bar -->
     <form class="row mb-4 g-2" method="GET" action="index.php">
       <div class="col-sm-10">
-        <input type="text" name="search" class="form-control" placeholder="Search Pokémon by name or ID">
+        <input type="text" name="search" class="form-control" placeholder="Buscar pokemón por nombre, tipo o numero identificador">
       </div>
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-primary w-100">Search</button>
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
       </div>
     </form>
 
@@ -42,7 +42,7 @@
             <div class="card shadow-sm h-100 border-dashed">
               <div class="card-body text-center d-flex align-items-center justify-content-center">
                 <a href="create.php" class="btn btn-success btn-lg w-100">
-                  + Create New Pokémon
+                  + Nuevo Pokemón
                 </a>
               </div>
             </div>

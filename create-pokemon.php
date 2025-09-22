@@ -82,7 +82,7 @@
                     $destPath    = $uploadDir . $newFileName;
 
                     // Validar extensión de imagen
-                    $allowedExts = ["webp"];
+                    $allowedExts = ["webp", "jpg", "jpeg", "png"];
                     if (in_array($fileExt, $allowedExts)) {
                         if (move_uploaded_file($fileTmpPath, $destPath)) {
                             $imagePath = $newFileName;
@@ -107,7 +107,7 @@
                     "tipo_1_id"       => $type1,
                     "tipo_2_id"       => $type2,
                     "descripcion" => $description,
-                    "imagen"       => $baseNewFileName
+                    "imagen"       => $newFileName,
                 ];
 
                 $createResult = $pokemonUtils->createPokemon($data);

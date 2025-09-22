@@ -93,7 +93,7 @@ class PokemonUtils {
                 '<div class="col">' .
                   '<div class="card shadow-sm h-100">' .
                     '<picture>' .
-                      '<img src="assets/imgs/pokemon_avatars/' . $pokemon['imagen'] . '.webp" class="card-img-top" alt="'. $pokemon['nombre'] . '">' .
+                      '<img src="assets/imgs/pokemon_avatars/' . $pokemon['imagen'] . '" class="card-img-top" alt="'. $pokemon['nombre'] . '">' .
                     '</picture>' .
                     '<div class="card-body">' .
                       '<h5 class="card-title">' . $pokemon['nombre'] . '</h5>' .
@@ -107,10 +107,10 @@ class PokemonUtils {
             $pokemonHtmlStr = $pokemonHtmlStr .
                       '</div>' .
                       '<div class="d-flex justify-content-between">' .
-                        '<a href="details.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-primary btn-sm">Details</a>' . 
+                        '<a href="details.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-primary btn-sm">Detalles</a>' . 
                         '<div class="btn-group">' .
-                          ($this->sessionUtils->isUserAdmin() ? ('<a href="edit.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-warning btn-sm">Edit</a>') : '') .
-                          ($this->sessionUtils->isUserAdmin() ? ('<a href="delete-pokemon.php?id=' . $pokemon['numero_identificador']  . '" class="btn btn-outline-danger btn-sm">Delete</a>') : '') . 
+                          ($this->sessionUtils->isUserAdmin() ? ('<a href="edit.php?id=' . $pokemon['numero_identificador'] . '" class="btn btn-outline-warning btn-sm">Editar</a>') : '') .
+                          ($this->sessionUtils->isUserAdmin() ? ('<a href="delete-pokemon.php?id=' . $pokemon['numero_identificador']  . '" class="btn btn-outline-danger btn-sm">Eliminar</a>') : '') . 
                         '</div>' .
                       '</div>' .
                     '</div>' .
